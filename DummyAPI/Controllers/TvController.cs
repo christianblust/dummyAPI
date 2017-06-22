@@ -15,13 +15,44 @@ namespace DummyAPI.Controllers
     {
        Tv tv = new Tv(null, null, false);
 
-        MyProperties prop = new MyProperties("test.txt");
-        
+        MyProperties prop = new MyProperties(System.Web.HttpContext.Current.Server.MapPath("~") + "test.txt");
+       
         // GET: api/Tv
         [HttpGet]
-        public bool Get()
+        public string Get()
         {
-            return true;
+
+            IEnumerable<KeyValuePair<string, string>> querypara;
+            querypara = Request.GetQueryNameValuePairs();
+
+            string result = "";
+            string para = querypara.ElementAt(0).Value;
+
+            string status = prop.get("status");
+
+            if (para == "1")
+            {
+                if (status == "true") result = "TV is already running";
+                else
+                {
+                    prop.set("status", "true");
+                    prop.Save();
+                    result = "TV is now running";
+                }
+            }
+
+            if (para == "0")
+            {
+                if (status == "false") result = "TV is already off";
+                else
+                {
+                    prop.set("status", "false");
+                    prop.Save();
+                    result = "TV is now off";
+                }
+            }
+
+            return result;
         }
 
         // GET: api/Tv/5
