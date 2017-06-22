@@ -10,9 +10,9 @@ namespace DummyAPI.Models
     {
         public  string Channel { get; set; }
         public  string Volume { get; set; }
-        public  bool Status { get; set; }
+        public  string Status { get; set; }
 
-       public Tv(string channel, string volume, bool status)
+       public Tv(string channel, string volume, string status)
         {
             Channel = channel;
             Volume = volume;

@@ -13,15 +13,12 @@ namespace DummyAPI.Controllers
 {
     public class TvController : ApiController
     {
-       Tv tv = new Tv(null, null, false);
-
         MyProperties prop = new MyProperties(System.Web.HttpContext.Current.Server.MapPath("~") + "test.txt");
        
         // GET: api/Tv
         [HttpGet]
         public string Get()
         {
-
             IEnumerable<KeyValuePair<string, string>> querypara;
             querypara = Request.GetQueryNameValuePairs();
 
@@ -68,7 +65,29 @@ namespace DummyAPI.Controllers
         [HttpPost]
         public IHttpActionResult Post([FromBody]Tv tv)
         {
+            string status = prop.get("status");
+
+            if (status == "false")
+            {
+                return Conflict();
+            }
+            // Simulate Timeout for Cortana (check async call timeout)
             System.Threading.Thread.Sleep(5000);
+            
+            // set Channel if its not null
+            if (tv.Channel != null)
+            {
+                prop.set("channel", tv.Channel);
+                prop.Save();
+            }
+
+            // set volume if its not null
+            if (tv.Volume != null)
+            {
+                prop.set("volume", tv.Volume);
+                prop.Save();
+            }
+
             return Ok(tv);
         }
 
