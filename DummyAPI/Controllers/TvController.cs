@@ -80,7 +80,7 @@ namespace DummyAPI.Controllers
             // set Channel if its not null
             if (tv.Channel != null && tv.Volume != null)
             {
-                response = "Channel set to: " + tv.Channel + " and volume set to: " + tv.Volume;
+                response = "Channel set to " + tv.Channel + " and volume set to " + tv.Volume;
 
                 prop.set("volume", tv.Volume);
                 prop.set("channel", tv.Channel);
@@ -90,7 +90,7 @@ namespace DummyAPI.Controllers
             // set volume if its not null
             else if (tv.Volume != null && tv.Channel == null)
             {
-                response = "Volume set to: " + tv.Volume;
+                response = "Volume set to " + tv.Volume;
 
                 prop.set("volume", tv.Volume);
                 prop.Save();
@@ -98,7 +98,7 @@ namespace DummyAPI.Controllers
 
             else if (tv.Channel != null && tv.Volume == null)
             {
-                response = "Channel set to: " + tv.Channel;
+                response = "Channel set to " + tv.Channel;
 
                 prop.set("channel", tv.Channel);
                 prop.Save();
