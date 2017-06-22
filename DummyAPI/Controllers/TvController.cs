@@ -66,29 +66,45 @@ namespace DummyAPI.Controllers
         public IHttpActionResult Post([FromBody]Tv tv)
         {
             string status = prop.get("status");
+            string response = "";
 
             if (status == "false")
             {
-                return Conflict();
+                response = "TV must be turned on to change the volume or channel!";
+                return Ok(response);
             }
+           
             // Simulate Timeout for Cortana (check async call timeout)
-            System.Threading.Thread.Sleep(5000);
+           //System.Threading.Thread.Sleep(17000);
             
             // set Channel if its not null
-            if (tv.Channel != null)
+            if (tv.Channel != null && tv.Volume != null)
             {
+                response = "Channel set to: " + tv.Channel + " and volume set to: " + tv.Volume;
+
+                prop.set("volume", tv.Volume);
                 prop.set("channel", tv.Channel);
                 prop.Save();
             }
 
             // set volume if its not null
-            if (tv.Volume != null)
+            else if (tv.Volume != null && tv.Channel == null)
             {
+                response = "Volume set to: " + tv.Volume;
+
                 prop.set("volume", tv.Volume);
                 prop.Save();
             }
 
-            return Ok(tv);
+            else if (tv.Channel != null && tv.Volume == null)
+            {
+                response = "Channel set to: " + tv.Channel;
+
+                prop.set("channel", tv.Channel);
+                prop.Save();
+            }
+
+            return Ok(response);
         }
 
         // PUT: api/Tv/5
